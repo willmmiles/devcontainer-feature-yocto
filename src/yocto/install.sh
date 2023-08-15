@@ -2,6 +2,28 @@
 
 set -e
 
+# Map release to a version number
+declare -A release_version_map
+release_version_map[scarthgap]=4.4
+release_version_map[nanbield]=4.3
+release_version_map[mickledore]=4.2
+release_version_map[langdale]=4.1
+release_version_map[kirkstone]=4.0
+release_version_map[honister]=3.4
+release_version_map[hardknott]=3.3
+release_version_map[gatesgarth]=3.2
+release_version_map[dunfell]=3.1
+release_version_map[zeus]=3.0
+# I'm not bothering with pre-3.0 releases
+
+# Map release version
+local release_version
+if [[ ${release} =~ [0-9]+\.[0-9]+ ]] ; then
+    release_version=${release}
+else
+    release_version=${release_version_map[${release,,}]}
+fi
+
 # Clean up
 rm -rf /var/lib/apt/lists/*
 
@@ -27,7 +49,6 @@ install_debian_packages() {
         build-essential \
         chrpath \
         socat \
-        python \
         python3 \
         python3-pip \
         python3-pexpect \
@@ -52,6 +73,11 @@ install_debian_packages() {
     # Include lz4 if available
     if [[ ! -z $(apt-cache --names-only search ^lz4$) ]]; then
         package_list="${package_list} lz4"
+    fi
+
+    # If we're targeting an old version, install python2
+    if (( $(echo 3.1  ${release_version} | awk '{if ($1 > $2) print 1;}') )); then
+        package_list="${package_list} python2"
     fi
 
     # Install the list of packages

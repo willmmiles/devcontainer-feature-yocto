@@ -14,7 +14,7 @@
                 "dunfell"
             ],
             "default": "scarthgap",
-            "description": "Target yocto release.  This is used to validate the base image and select appropriate packages."
+            "description": "Target yocto release.  This is used to validate the base image and select appropriate packages.  Version numbers such as 4.3 are also accepted."
         }
     },
     "installsAfter": [
