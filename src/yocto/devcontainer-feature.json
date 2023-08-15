@@ -1,0 +1,28 @@
+{
+    "id": "yocto",
+    "version": "0.1.0",
+    "name": "Yocto Embedded Linux",
+    "description": "Installs the build tool dependencies for bitbake and Yocto Linux development",
+    "options": {
+        "release": {
+            "type": "string",
+            "proposals": [
+                "scarthgap",
+                "nanbield",
+                "mickledore", 
+                "kirkstone",
+                "dunfell"
+            ],
+            "default": "scarthgap",
+            "description": "Target yocto release.  This is used to validate the base image and select appropriate packages."
+        }
+    },
+    "installsAfter": [
+        "ghcr.io/devcontainers/features/common-utils"
+    ],
+
+    // Yocto has to run git operations in fakeroot
+    // While modern Yocto versions handle this internally, legacy versions don't
+    // Unfortunately this can't be made conditional.
+    "postStartCommand": "git config --global --add safe.directory '*'"
+}

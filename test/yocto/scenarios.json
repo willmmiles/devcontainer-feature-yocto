@@ -1,0 +1,8 @@
+{
+    "zeus": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu-18.04",
+        "features": {
+            "yocto": { "release": "zeus"}
+        }
+    }
+}
