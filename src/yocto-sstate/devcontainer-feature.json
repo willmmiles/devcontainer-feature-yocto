@@ -3,8 +3,6 @@
     "version": "0.1.0",
     "name": "Shared State cache volume for Yocto Embedded Linux building",
     "description": "Adds a volume for caching Yocto shared state",
-	// Shared cache mount points
-	// These are implemented as docker volumes.  They will be shared amongst all instances.
 	"mounts": [
         { "source": "yocto-dlcache", "target": "${containerWorkspaceFolder}/build/downloads", "type": "volume"},
         { "source": "yocto-sscache", "target": "${containerWorkspaceFolder}/build/sstate-cache", "type": "volume"}

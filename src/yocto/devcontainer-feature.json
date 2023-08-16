@@ -20,9 +20,5 @@
     "installsAfter": [
         "ghcr.io/devcontainers/features/common-utils"
     ],
-
-    // Yocto has to run git operations in fakeroot
-    // While modern Yocto versions handle this internally, legacy versions don't
-    // Unfortunately this can't be made conditional.
     "postStartCommand": "git config --global --add safe.directory '*'"
 }
