@@ -17,12 +17,19 @@ release_version_map[zeus]=3.0
 # I'm not bothering with pre-3.0 releases
 
 # Map release version
-local release_version
 if [[ ${release} =~ [0-9]+\.[0-9]+ ]] ; then
-    release_version=${release}
+    # TODO: strip patch release if specified
+    release_version=${RELEASE}
 else
-    release_version=${release_version_map[${release,,}]}
+    release_version=${release_version_map[${RELEASE,,}]}
 fi
+
+if [[ -z "${release_version} "]] ; then
+    echo "Unrecognized Yocto release ${RELEASE}"
+    exit 1
+fi
+
+echo "Selected Yocto release version number is: ${release_version}"
 
 # Clean up
 rm -rf /var/lib/apt/lists/*
@@ -62,7 +69,6 @@ install_debian_packages() {
         python3-git \
         python3-jinja2 \
         python3-distutils \
-        pylint3 \
         iproute2 \
         zstd \
         file \
@@ -75,9 +81,21 @@ install_debian_packages() {
         package_list="${package_list} lz4"
     fi
 
+    # Get pylint, depending on base version
+    # Old base images need pylint3
+    if [[ ! -z $(apt-cache --names-only search ^pylint3$) ]]; then
+        package_list="${package_list} pylint3"
+    else
+        package_list="${package_list} pylint"
+    fi
+
     # If we're targeting an old version, install python2
     if (( $(echo 3.1  ${release_version} | awk '{if ($1 > $2) print 1;}') )); then
-        package_list="${package_list} python2"
+        if [[ ! -z $(apt-cache --names-only search ^python2$) ]]; then
+            package_list="${package_list} python2"
+        else
+            package_list="${package_list} python"
+        fi
     fi
 
     # Install the list of packages
