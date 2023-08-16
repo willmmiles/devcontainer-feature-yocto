@@ -24,7 +24,7 @@ else
     release_version=${release_version_map[${RELEASE,,}]}
 fi
 
-if [[ -z "${release_version} "]] ; then
+if [[ -z "${release_version}" ]] ; then
     echo "Unrecognized Yocto release ${RELEASE}"
     exit 1
 fi
